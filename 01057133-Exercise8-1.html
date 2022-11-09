@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Local Storage</title>
+    <style type="text/CSS">
+      table {
+        width: 90%;
+        border-collapse: collapse;
+        background-color: lightblue;
+        font-family: Perpetua;
+      }
+
+      table,
+      td,
+      th {
+        border: 1px solid black;
+        padding: 4px;
+      }
+
+      th {
+        text-align: center;
+        color: white;
+        background-color: darkblue;
+      }
+
+      tr.oddrow {
+        background-color: white;
+      }
+
+      td {
+        text-align: center;
+      }
+    </style>
+    <script type="text/javascript">
+      let out = "";
+      let Table =
+        "<table><thead><tr><th>Title</th><th>Author</th><th>Year</th><th>URL</th></tr></thead><tbody>";
+      function start() {
+        out = Table;
+        let num = localStorage.length;
+        while (num > 0) {
+          num--;
+          let key = localStorage.key(num);
+          let ntou = key.startsWith("ntou");
+          if (ntou) {
+            objA = JSON.parse(localStorage.getItem(localStorage.key(num)));
+            out +=
+              "<td>" +
+              objA.title +
+              "</td><td>" +
+              objA.author +
+              "</td><td>" +
+              objA.year +
+              "</td><td><a href = '" +
+              objA.url +
+              "' target = '_blank'>" +
+              objA.url +
+              "</a></td></tbody>";
+          }
+        }
+        let add = document.getElementById("addButton");
+        add.addEventListener("click", addi, false);
+        let removeall = document.getElementById("removeAllButton");
+        removeall.addEventListener("click", remove, false);
+        document.getElementById("display").innerHTML = out;
+      }
+      function addi() {
+        console.log(121);
+        let title = document.getElementById("title");
+        let author = document.getElementById("author");
+        let year = document.getElementById("year");
+        let book = document.getElementById("book");
+        let obj = {
+          title: title.value,
+          author: author.value,
+          year: year.value,
+          book: book.value,
+        };
+        let jname = JSON.stringify(obj);
+        let now = new Date();
+        let key = "ntou-" + now.getTime();
+        localStorage.setItem(key, jname);
+        out +=
+          "<td>" +
+          obj.title +
+          "</td><td>" +
+          obj.author +
+          "</td><td>" +
+          obj.year +
+          "</td><td><a href = '" +
+          obj.url +
+          "' target = '_blank'>" +
+          obj.url +
+          "</a></td></tbody>";
+        document.getElementById("display").innerHTML = out;
+      }
+
+      function remove() {
+        out = Table;
+        localStorage.clear();
+        document.getElementById("display").innerHTML = out;
+        window.alert("All items were removes!");
+      }
+
+      window.addEventListener("load", start, false);
+    </script>
+  </head>
+
+  <body>
+    <a
+      href="https://github.com/CCYuann/HTML_HW/blob/main/01057133-Exercise8-1"
+      target="_blank"
+      >GitHub Link</a
+    >
+    <form action="#">
+      <p>
+        <label
+          >Book Title:
+          <input type="text" id="title" />
+        </label>
+        <label
+          >Author(s):
+          <input type="text" id="author" />
+        </label>
+        <label
+          >Year:
+          <input type="number" id="year" />
+        </label>
+        <label
+          >Book URL:
+          <input type="url" id="book" />
+        </label>
+      </p>
+      <p>
+        <input type="button" value="Add New Item" id="addButton" />
+        <input type="button" value="Remove All Items" id="removeAllButton" />
+      </p>
+    </form>
+    <hr />
+    <div id="display"></div>
+  </body>
+</html>
